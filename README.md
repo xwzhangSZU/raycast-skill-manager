@@ -40,13 +40,14 @@ Key**, and a model id into **Custom Model**.
 | --------------------------- | --------------------------------------------------- | ----------------------------------------------------------------------- |
 | 通义千问 (Qwen / DashScope) | `https://dashscope.aliyuncs.com/compatible-mode/v1` | [Alibaba Cloud Model Studio (百炼)](https://bailian.console.aliyun.com) |
 | DeepSeek                    | `https://api.deepseek.com`                          | [platform.deepseek.com](https://platform.deepseek.com)                  |
-| MiniMax                     | `https://api.minimax.io/v1`                         | [platform.minimax.io](https://platform.minimax.io)                      |
-| Xiaomi MiMo                 | `https://api.xiaomimimo.com/v1`                     | [platform.xiaomimimo.com](https://platform.xiaomimimo.com)              |
+| MiniMax                     | `https://api.minimaxi.com/v1`                       | [platform.minimaxi.com](https://platform.minimaxi.com)                  |
+| Xiaomi MiMo (token plan)    | `https://token-plan-cn.xiaomimimo.com/v1`           | [platform.xiaomimimo.com](https://platform.xiaomimimo.com)              |
 
-> Base URLs verified against each provider's docs (2026). The Xiaomi MiMo host
-> (`api.xiaomimimo.com`) is confirmed; the `/v1` path follows the
-> OpenAI-compatible convention — check the platform docs if your client expects
-> a different path.
+> Verified against each provider's docs (2026). Region/cluster matters:
+> **MiniMax** also has an international endpoint `https://api.minimax.io/v1`
+> (platform.minimax.io); **Xiaomi MiMo**'s token-plan URL is per-cluster (China
+> `token-plan-cn`, Europe `token-plan-ams`) and is shown authoritatively on its
+> subscription-management page.
 
 ## Safe by design
 
