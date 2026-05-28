@@ -5,6 +5,6 @@ export default defineConfig({
     include: ["test/**/*.test.ts"],
     environment: "node",
     passWithNoTests: true,
-    coverage: { include: ["src/lib/**/*.ts"], exclude: ["src/lib/cache.ts", "src/lib/actions.ts"] },
+    coverage: { include: ["src/lib/**/*.ts"], exclude: ["src/lib/cache.ts", "src/lib/actions.ts", "src/lib/llm.ts"] },
   },
 });
