@@ -1,8 +1,9 @@
-import { exec } from "node:child_process";
+import { exec, execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { Clipboard, open, showToast, Toast } from "@raycast/api";
 
 const pexec = promisify(exec);
+const pexecFile = promisify(execFile);
 
 export async function copyToClipboard(
   text: string,
@@ -16,7 +17,7 @@ export async function openInEditor(filePath: string): Promise<void> {
   for (const bin of ["cursor", "code"]) {
     try {
       await pexec(`command -v ${bin}`);
-      await pexec(`${bin} "${filePath}"`);
+      await pexecFile(bin, [filePath]);
       return;
     } catch {
       // try next editor

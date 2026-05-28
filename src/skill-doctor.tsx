@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { homedir } from "node:os";
-import { List } from "@raycast/api";
+import { List, Icon, Color } from "@raycast/api";
 import { getIndex } from "./lib/cache";
 import { computeHealth } from "./lib/health";
 import { IssueListItem } from "./components/IssueListItem";
@@ -46,7 +46,7 @@ export default function Command() {
       })}
       {!isLoading && issues.length === 0 && (
         <List.EmptyView
-          icon="🎉"
+          icon={{ source: Icon.Checkmark, tintColor: Color.Green }}
           title="No issues"
           description="All skills look healthy."
         />
