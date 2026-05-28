@@ -36,18 +36,18 @@ key via Preferences → Provider → "Custom".
 Paste the base URL into **Custom API Base URL**, your key into **Custom API
 Key**, and a model id into **Custom Model**.
 
-| Provider                    | OpenAI-compatible base URL                          | Get a key                                                               |
-| --------------------------- | --------------------------------------------------- | ----------------------------------------------------------------------- |
-| 通义千问 (Qwen / DashScope) | `https://dashscope.aliyuncs.com/compatible-mode/v1` | [Alibaba Cloud Model Studio (百炼)](https://bailian.console.aliyun.com) |
-| DeepSeek                    | `https://api.deepseek.com`                          | [platform.deepseek.com](https://platform.deepseek.com)                  |
-| MiniMax                     | `https://api.minimaxi.com/v1`                       | [platform.minimaxi.com](https://platform.minimaxi.com)                  |
-| Xiaomi MiMo (token plan)    | `https://token-plan-cn.xiaomimimo.com/v1`           | [platform.xiaomimimo.com](https://platform.xiaomimimo.com)              |
+| Provider                    | OpenAI-compatible base URL                                           | Get a key                                                  |
+| --------------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------- |
+| 通义千问 (Qwen, Token Plan) | `https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1` | [百炼 / Model Studio](https://bailian.console.aliyun.com)  |
+| DeepSeek                    | `https://api.deepseek.com`                                           | [platform.deepseek.com](https://platform.deepseek.com)     |
+| MiniMax                     | `https://api.minimaxi.com/v1`                                        | [platform.minimaxi.com](https://platform.minimaxi.com)     |
+| Xiaomi MiMo (token plan)    | `https://token-plan-cn.xiaomimimo.com/v1`                            | [platform.xiaomimimo.com](https://platform.xiaomimimo.com) |
 
-> Verified against each provider's docs (2026). Region/cluster matters:
-> **MiniMax** also has an international endpoint `https://api.minimax.io/v1`
-> (platform.minimax.io); **Xiaomi MiMo**'s token-plan URL is per-cluster (China
-> `token-plan-cn`, Europe `token-plan-ams`) and is shown authoritatively on its
-> subscription-management page.
+> Verified against each provider's docs (2026); these are the **Token Plan**
+> endpoints where a provider offers one. Alternatives: **Qwen** pay-as-you-go is
+> `https://dashscope.aliyuncs.com/compatible-mode/v1`; **MiniMax** international
+> is `https://api.minimax.io/v1`; **Xiaomi MiMo** is per-cluster (China
+> `token-plan-cn`, Europe `token-plan-ams`), authoritative on its subscription page.
 
 ## Safe by design
 
