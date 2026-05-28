@@ -4,7 +4,7 @@
   "title": "Curator",
   "description": "Curate, search, and health-check your installed Claude & Codex skills.",
   "icon": "icon.png",
-  "author": "xwzhangSZU",
+  "author": "xianwei_zhang",
   "categories": ["Developer Tools"],
   "license": "MIT",
   "commands": [
