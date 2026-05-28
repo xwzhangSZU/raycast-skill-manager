@@ -1,4 +1,9 @@
-import type { CatalogEntry, DisplaySkill, RawRec, Recommendation } from "./types";
+import type {
+  CatalogEntry,
+  DisplaySkill,
+  RawRec,
+  Recommendation,
+} from "./types";
 
 export function firstSentence(text: string): string {
   const t = text.replace(/\s+/g, " ").trim();
@@ -18,7 +23,9 @@ export function buildCatalog(skills: DisplaySkill[]): CatalogEntry[] {
 export function buildPrompt(query: string, catalog: CatalogEntry[]): string {
   const lines = catalog
     .map((c, i) => {
-      const trig = c.triggers.length ? ` (triggers: ${c.triggers.join(", ")})` : "";
+      const trig = c.triggers.length
+        ? ` (triggers: ${c.triggers.join(", ")})`
+        : "";
       return `${i + 1}. ${c.name} [${c.source}] — ${c.desc}${trig}`;
     })
     .join("\n");
@@ -47,7 +54,11 @@ export function parseRecommendations(reply: string): RawRec[] {
   if (!Array.isArray(arr)) return [];
   const out: RawRec[] = [];
   for (const item of arr) {
-    if (item && typeof item === "object" && typeof (item as { name?: unknown }).name === "string") {
+    if (
+      item &&
+      typeof item === "object" &&
+      typeof (item as { name?: unknown }).name === "string"
+    ) {
       const o = item as { name: string; confidence?: unknown; why?: unknown };
       out.push({
         name: o.name,
@@ -66,7 +77,10 @@ function normalizeConfidence(c: string): "high" | "medium" | "low" {
   return "medium";
 }
 
-export function resolveRecommendations(raw: RawRec[], skills: DisplaySkill[]): Recommendation[] {
+export function resolveRecommendations(
+  raw: RawRec[],
+  skills: DisplaySkill[],
+): Recommendation[] {
   const byName = new Map(skills.map((s) => [s.name.toLowerCase(), s]));
   const seen = new Set<string>();
   const out: Recommendation[] = [];
@@ -74,7 +88,11 @@ export function resolveRecommendations(raw: RawRec[], skills: DisplaySkill[]): R
     const skill = byName.get(r.name.trim().toLowerCase());
     if (!skill || seen.has(skill.key)) continue;
     seen.add(skill.key);
-    out.push({ skill, confidence: normalizeConfidence(r.confidence), why: r.why.trim() });
+    out.push({
+      skill,
+      confidence: normalizeConfidence(r.confidence),
+      why: r.why.trim(),
+    });
     if (out.length >= 5) break;
   }
   return out;

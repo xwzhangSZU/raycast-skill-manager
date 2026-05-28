@@ -1,4 +1,12 @@
-import { List, ActionPanel, Action, Icon, Color, launchCommand, LaunchType } from "@raycast/api";
+import {
+  List,
+  ActionPanel,
+  Action,
+  Icon,
+  Color,
+  launchCommand,
+  LaunchType,
+} from "@raycast/api";
 import { join } from "node:path";
 import { copyToClipboard, openInEditor } from "../lib/actions";
 import { SkillDetail } from "./SkillDetail";
@@ -10,7 +18,10 @@ function iconFor(rec: Recommendation) {
     : { source: Icon.Box, tintColor: Color.Blue };
 }
 
-const CONF: Record<Recommendation["confidence"], { value: string; color: Color }> = {
+const CONF: Record<
+  Recommendation["confidence"],
+  { value: string; color: Color }
+> = {
   high: { value: "high", color: Color.Green },
   medium: { value: "medium", color: Color.Yellow },
   low: { value: "low", color: Color.SecondaryText },
@@ -27,17 +38,27 @@ export function RecommendationItem({
 }) {
   const s = rec.skill;
   const conf = CONF[rec.confidence];
-  const slash = s.source.includes("plugin") && s.marketplace ? `/${s.marketplace}:${s.name}` : `/${s.name}`;
+  const slash =
+    s.source.includes("plugin") && s.marketplace
+      ? `/${s.marketplace}:${s.name}`
+      : `/${s.name}`;
   return (
     <List.Item
       icon={iconFor(rec)}
       title={s.name}
       subtitle={rec.why}
-      accessories={[...s.surfaces.map((surf) => ({ tag: surf })), { tag: { value: conf.value, color: conf.color } }]}
+      accessories={[
+        ...s.surfaces.map((surf) => ({ tag: surf })),
+        { tag: { value: conf.value, color: conf.color } },
+      ]}
       detail={<SkillDetail skill={s} issues={[]} />}
       actions={
         <ActionPanel>
-          <Action title="Copy Skill Name" icon={Icon.Clipboard} onAction={() => copyToClipboard(s.name)} />
+          <Action
+            title="Copy Skill Name"
+            icon={Icon.Clipboard}
+            onAction={() => copyToClipboard(s.name)}
+          />
           <Action
             title="Re-run Recommendation"
             icon={Icon.ArrowClockwise}
@@ -62,12 +83,20 @@ export function RecommendationItem({
             shortcut={{ modifiers: ["cmd"], key: "o" }}
             onAction={() => openInEditor(join(s.primary.realPath, "SKILL.md"))}
           />
-          <Action.ShowInFinder path={s.primary.realPath} shortcut={{ modifiers: ["cmd", "shift"], key: "f" }} />
+          <Action.ShowInFinder
+            path={s.primary.realPath}
+            shortcut={{ modifiers: ["cmd", "shift"], key: "f" }}
+          />
           <Action
             title="Open in Search Skills"
             icon={Icon.MagnifyingGlass}
             shortcut={{ modifiers: ["cmd", "shift"], key: "s" }}
-            onAction={() => launchCommand({ name: "search-skills", type: LaunchType.UserInitiated })}
+            onAction={() =>
+              launchCommand({
+                name: "search-skills",
+                type: LaunchType.UserInitiated,
+              })
+            }
           />
         </ActionPanel>
       }

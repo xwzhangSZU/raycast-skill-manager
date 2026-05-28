@@ -12,7 +12,12 @@ import {
 } from "@raycast/api";
 import { getIndex } from "./lib/cache";
 import { aggregateSkills } from "./lib/aggregate";
-import { buildCatalog, buildPrompt, parseRecommendations, resolveRecommendations } from "./lib/recommend";
+import {
+  buildCatalog,
+  buildPrompt,
+  parseRecommendations,
+  resolveRecommendations,
+} from "./lib/recommend";
 import { chat, AIUnavailableError } from "./lib/llm";
 import { RecommendationItem } from "./components/RecommendationItem";
 import type { Recommendation } from "./lib/types";
@@ -42,7 +47,10 @@ export default function Command() {
         return;
       }
       const reply = await chat(buildPrompt(q, buildCatalog(skills)));
-      const result = resolveRecommendations(parseRecommendations(reply), skills);
+      const result = resolveRecommendations(
+        parseRecommendations(reply),
+        skills,
+      );
       cache.current.set(q, result);
       setRecs(result);
     } catch (e) {
@@ -69,11 +77,20 @@ export default function Command() {
           description="Set an API key in Preferences, or use Search Skills."
           actions={
             <ActionPanel>
-              <Action title="Open Extension Preferences" icon={Icon.Gear} onAction={openExtensionPreferences} />
+              <Action
+                title="Open Extension Preferences"
+                icon={Icon.Gear}
+                onAction={openExtensionPreferences}
+              />
               <Action
                 title="Open Search Skills"
                 icon={Icon.MagnifyingGlass}
-                onAction={() => launchCommand({ name: "search-skills", type: LaunchType.UserInitiated })}
+                onAction={() =>
+                  launchCommand({
+                    name: "search-skills",
+                    type: LaunchType.UserInitiated,
+                  })
+                }
               />
             </ActionPanel>
           }
@@ -93,15 +110,26 @@ export default function Command() {
     >
       <List.Item
         icon={Icon.Stars}
-        title={query.trim() ? `Get recommendations for "${query.trim()}"` : "Type your task, then press ⏎"}
+        title={
+          query.trim()
+            ? `Get recommendations for "${query.trim()}"`
+            : "Type your task, then press ⏎"
+        }
         actions={
           <ActionPanel>
-            <Action title="Get Recommendations" icon={Icon.Stars} onAction={run} />
+            <Action
+              title="Get Recommendations"
+              icon={Icon.Stars}
+              onAction={run}
+            />
           </ActionPanel>
         }
       />
       {recs?.length === 0 && !loading && (
-        <List.Item icon={Icon.QuestionMark} title="No matching skill — try rephrasing" />
+        <List.Item
+          icon={Icon.QuestionMark}
+          title="No matching skill — try rephrasing"
+        />
       )}
       {recs?.map((rec) => (
         <RecommendationItem

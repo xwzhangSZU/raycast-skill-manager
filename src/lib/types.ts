@@ -78,7 +78,12 @@ export type SkillIndex = {
   skills: ParsedSkill[];
 };
 
-export type CatalogEntry = { name: string; desc: string; triggers: string[]; source: string };
+export type CatalogEntry = {
+  name: string;
+  desc: string;
+  triggers: string[];
+  source: string;
+};
 
 export type RawRec = { name: string; confidence: string; why: string };
 
