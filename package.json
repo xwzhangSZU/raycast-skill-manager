@@ -21,6 +21,13 @@
       "subtitle": "Curator",
       "description": "Health-check installed skills and copy fix commands.",
       "mode": "view"
+    },
+    {
+      "name": "recommend-skills",
+      "title": "Recommend Skills",
+      "subtitle": "Curator",
+      "description": "Describe a task; AI ranks the most relevant installed skills.",
+      "mode": "view"
     }
   ],
   "preferences": [
