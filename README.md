@@ -1,51 +1,60 @@
 # Curator
 
 **Your skills, curated.** A Raycast extension that gives you a fast, searchable
-view of every skill installed for Claude Code and Codex — and quietly tells you
-which ones are broken.
+view of every skill installed for Claude Code and Codex, tells you which ones
+are broken, and — when you can't remember what you have — lets an AI recommend
+the right skill for the task you describe.
 
 You have dozens of skills spread across user directories, plugin marketplaces,
 and version caches, named in a mix of conventions you can never quite remember.
-Curator turns that sprawl into one keystroke: open it, type what you're trying
-to do, and grab the skill you forgot you had.
+Curator turns that sprawl into one keystroke.
 
 ## Commands
 
 ### Search Skills
 
 The launcher. Fuzzy-search every installed skill by name, purpose, or trigger
-phrase — `scrape a webpage`, `firecrawl`, `superpowers` all land on the right
-result. Then:
-
-- `⏎` — copy the skill name
-- `⌘⏎` — copy it as a `/command`
-- `⌘⇧T` — copy a trigger phrase
-- `⌘D` — preview the full `SKILL.md` in a side panel
-- `⌘O` — open `SKILL.md` in your editor
-- `⌘R` — rescan
-
-Skills shared across Claude and Codex are merged into one row with surface
-badges; plugin and user skills are grouped by source.
+phrase. `⏎` copy the name · `⌘⏎` copy as `/command` · `⌘⇧T` copy a trigger ·
+`⌘D` preview `SKILL.md` · `⌘O` open in editor · `⌘R` rescan.
 
 ### Skill Doctor
 
-The check-up. Surfaces health issues across your skill tree:
+The check-up. Lists health issues — broken symlinks, missing/unparseable
+`SKILL.md`, name ≠ directory, Claude↔Codex drift, stale plugin cache — each with
+a one-keystroke **Copy Fix Command**. Fixes are copied to your clipboard, never
+applied for you.
 
-| Check | What it catches |
-| --- | --- |
-| Broken symlink | a linked skill whose target is gone |
-| Missing / unparseable `SKILL.md` | empty or malformed skill folders |
-| Name ≠ directory | `frontmatter.name` that disagrees with the folder |
-| Cross-surface drift | a skill present for Claude but not Codex (or vice versa) |
-| Stale cache | older plugin versions lingering in the cache |
+### Recommend Skills
 
-Each issue comes with a one-keystroke **Copy Fix Command**.
+Describe a task in plain language and an AI ranks the most relevant installed
+skills, each with a one-line reason. Uses **Raycast AI** by default (requires
+Raycast Pro); or point it at any **OpenAI-compatible** provider with your own
+key via Preferences → Provider → "Custom".
+
+#### Recommended providers (custom / bring-your-own-key)
+
+Paste the base URL into **Custom API Base URL**, your key into **Custom API
+Key**, and a model id into **Custom Model**.
+
+| Provider                    | OpenAI-compatible base URL                          | Get a key                                                               |
+| --------------------------- | --------------------------------------------------- | ----------------------------------------------------------------------- |
+| 通义千问 (Qwen / DashScope) | `https://dashscope.aliyuncs.com/compatible-mode/v1` | [Alibaba Cloud Model Studio (百炼)](https://bailian.console.aliyun.com) |
+| DeepSeek                    | `https://api.deepseek.com`                          | [platform.deepseek.com](https://platform.deepseek.com)                  |
+| MiniMax                     | `https://api.minimax.io/v1`                         | [platform.minimax.io](https://platform.minimax.io)                      |
+| Xiaomi MiMo                 | `https://api.xiaomimimo.com/v1`                     | [platform.xiaomimimo.com](https://platform.xiaomimimo.com)              |
+
+> Base URLs verified against each provider's docs (2026). The Xiaomi MiMo host
+> (`api.xiaomimimo.com`) is confirmed; the `/v1` path follows the
+> OpenAI-compatible convention — check the platform docs if your client expects
+> a different path.
 
 ## Safe by design
 
 Curator **never writes to or deletes from your filesystem.** Every fix is a
 shell command copied to your clipboard, for you to review and run yourself. The
-only process it ever launches is your editor (via `execFile`, no shell).
+only process it ever launches is your editor (via `execFile`, no shell). Skill
+recommendations send your task text plus a compact skill catalog to your chosen
+AI provider — and only when you press ⏎.
 
 ## Development
 
@@ -54,15 +63,11 @@ only process it ever launches is your editor (via `execFile`, no shell).
     npm test         # run unit tests
     npm run lint     # lint
 
-The core lives in `src/lib/` as pure, dependency-light modules (scan → parse →
-aggregate → health → fix-command) with a full unit-test suite. The Raycast UI is
-two thin `view` commands on top.
+The core lives in `src/lib/` as pure, dependency-light modules with a full
+unit-test suite; the Raycast UI is three thin `view` commands on top.
 
 ## Status
 
-v1. Before submitting to the Raycast Store: replace the placeholder
-`assets/icon.png` with a real 512×512 PNG, and set `author` in `package.json` to
-your Raycast Store handle.
-
-Roadmap (v2): natural-language skill recommendation — the full `SKILL.md`
-frontmatter is already preserved in the cache as the hook.
+v1 (Search + Doctor) and v2 (Recommend) are merged. Roadmap (v2.1): multi-skill
+**pipeline** recommendation — describe a goal, get an ordered workflow across
+several skills.
