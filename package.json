@@ -1,8 +1,8 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
-  "name": "skill-manager",
-  "title": "Skill Manager",
-  "description": "Browse and health-check your installed Claude & Codex skills.",
+  "name": "curator",
+  "title": "Curator",
+  "description": "Curate, search, and health-check your installed Claude & Codex skills.",
   "icon": "icon.png",
   "author": "xianweizhang",
   "categories": ["Developer Tools"],
@@ -11,14 +11,14 @@
     {
       "name": "search-skills",
       "title": "Search Skills",
-      "subtitle": "Skill Manager",
+      "subtitle": "Curator",
       "description": "Search installed Claude & Codex skills and copy their names/triggers.",
       "mode": "view"
     },
     {
       "name": "skill-doctor",
       "title": "Skill Doctor",
-      "subtitle": "Skill Manager",
+      "subtitle": "Curator",
       "description": "Health-check installed skills and copy fix commands.",
       "mode": "view"
     }
