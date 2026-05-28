@@ -77,3 +77,13 @@ export type SkillIndex = {
   scannedAt: number;
   skills: ParsedSkill[];
 };
+
+export type CatalogEntry = { name: string; desc: string; triggers: string[]; source: string };
+
+export type RawRec = { name: string; confidence: string; why: string };
+
+export type Recommendation = {
+  skill: DisplaySkill;
+  confidence: "high" | "medium" | "low";
+  why: string;
+};
