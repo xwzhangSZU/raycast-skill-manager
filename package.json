@@ -23,6 +23,44 @@
       "mode": "view"
     }
   ],
+  "preferences": [
+    {
+      "name": "provider",
+      "title": "AI Provider",
+      "description": "Which AI to use for Recommend Skills.",
+      "type": "dropdown",
+      "required": false,
+      "default": "auto",
+      "data": [
+        { "title": "Auto (Raycast AI, else my key)", "value": "auto" },
+        { "title": "Raycast AI", "value": "raycast" },
+        { "title": "My API key", "value": "byok" }
+      ]
+    },
+    {
+      "name": "apiBaseURL",
+      "title": "API Base URL",
+      "description": "OpenAI-compatible endpoint (used for My API key / Auto fallback).",
+      "type": "textfield",
+      "required": false,
+      "default": "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    },
+    {
+      "name": "apiKey",
+      "title": "API Key",
+      "description": "Your OpenAI-compatible API key.",
+      "type": "password",
+      "required": false
+    },
+    {
+      "name": "apiModel",
+      "title": "Model",
+      "description": "Model name for your API key (e.g. qwen-plus, gpt-4o-mini).",
+      "type": "textfield",
+      "required": false,
+      "default": "qwen-plus"
+    }
+  ],
   "dependencies": {
     "@raycast/api": "^1.79.0",
     "js-yaml": "^4.1.0"
