@@ -12,7 +12,11 @@ export async function reconcileIndex(args: {
   for (const e of args.scanned) {
     const id = skillId(e.realPath);
     const prev = cachedById.get(id);
-    const unchanged = prev && e.fileMtime !== null && prev.fileMtime === e.fileMtime && !e.isBroken;
+    const unchanged =
+      prev &&
+      e.fileMtime !== null &&
+      prev.fileMtime === e.fileMtime &&
+      !e.isBroken;
     if (unchanged) {
       skills.push(prev);
     } else {

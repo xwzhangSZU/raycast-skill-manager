@@ -27,12 +27,17 @@ export function writeIndex(index: SkillIndex): void {
 async function parseWithFile(entry: RawSkillEntry): Promise<ParsedSkill> {
   let rawMd: string | null = null;
   if (entry.skillMdExists && !entry.isBroken) {
-    rawMd = await readFile(join(entry.realPath, "SKILL.md"), "utf8").catch(() => null);
+    rawMd = await readFile(join(entry.realPath, "SKILL.md"), "utf8").catch(
+      () => null,
+    );
   }
   return parseEntry(entry, rawMd);
 }
 
-export async function getIndex(opts?: { force?: boolean; home?: string }): Promise<SkillIndex> {
+export async function getIndex(opts?: {
+  force?: boolean;
+  home?: string;
+}): Promise<SkillIndex> {
   const home = opts?.home ?? homedir();
   const scanned = await scanSkills(home);
   const cached = opts?.force ? null : readCachedIndex();

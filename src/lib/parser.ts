@@ -15,23 +15,37 @@ export function splitFrontmatter(raw: string): {
   error?: string;
 } {
   const m = raw.match(FRONTMATTER_RE);
-  if (!m) return { frontmatter: {}, body: raw.trim(), error: "no frontmatter block" };
+  if (!m)
+    return { frontmatter: {}, body: raw.trim(), error: "no frontmatter block" };
   try {
     const fm = yaml.load(m[1]);
     if (typeof fm !== "object" || fm === null) {
-      return { frontmatter: {}, body: m[2].trim(), error: "frontmatter is not a map" };
+      return {
+        frontmatter: {},
+        body: m[2].trim(),
+        error: "frontmatter is not a map",
+      };
     }
     return { frontmatter: fm as Record<string, unknown>, body: m[2].trim() };
   } catch (e) {
-    return { frontmatter: {}, body: m[2]?.trim() ?? "", error: `yaml error: ${(e as Error).message}` };
+    return {
+      frontmatter: {},
+      body: m[2]?.trim() ?? "",
+      error: `yaml error: ${(e as Error).message}`,
+    };
   }
 }
 
 export function extractTriggerHints(description: string): string[] {
   const hints = new Set<string>();
-  for (const m of description.matchAll(/"([^"]{2,40})"/g)) hints.add(m[1].trim());
+  for (const m of description.matchAll(/"([^"]{2,40})"/g))
+    hints.add(m[1].trim());
   const tw = description.match(/[Tt]rigger words?:\s*([^.\n]+)/);
-  if (tw) tw[1].split(",").forEach((s) => { const t = s.trim(); if (t) hints.add(t); });
+  if (tw)
+    tw[1].split(",").forEach((s) => {
+      const t = s.trim();
+      if (t) hints.add(t);
+    });
   const uw = description.match(/[Uu]se when ([^.]{3,120})\./);
   if (uw) hints.add(`use when ${uw[1].trim()}`);
   return [...hints];
@@ -46,7 +60,10 @@ export function tokenizeKeywords(description: string): string[] {
   return [...new Set(toks)].slice(0, 50);
 }
 
-export function parseEntry(entry: RawSkillEntry, rawMd: string | null): ParsedSkill {
+export function parseEntry(
+  entry: RawSkillEntry,
+  rawMd: string | null,
+): ParsedSkill {
   const dirName = basename(entry.realPath);
   let frontmatter: Record<string, unknown> = {};
   let body = "";
@@ -67,7 +84,8 @@ export function parseEntry(entry: RawSkillEntry, rawMd: string | null): ParsedSk
     typeof frontmatter.name === "string" && frontmatter.name.trim()
       ? frontmatter.name.trim()
       : dirName;
-  const description = typeof frontmatter.description === "string" ? frontmatter.description : "";
+  const description =
+    typeof frontmatter.description === "string" ? frontmatter.description : "";
 
   return {
     id: skillId(entry.realPath),

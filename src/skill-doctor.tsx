@@ -29,7 +29,10 @@ export default function Command() {
   }, []);
 
   return (
-    <List isLoading={isLoading} searchBarPlaceholder={`Filter ${issues.length} issue(s)…`}>
+    <List
+      isLoading={isLoading}
+      searchBarPlaceholder={`Filter ${issues.length} issue(s)…`}
+    >
       {SECTIONS.map(({ sev, title }) => {
         const group = issues.filter((i) => i.severity === sev);
         if (group.length === 0) return null;
@@ -42,7 +45,11 @@ export default function Command() {
         );
       })}
       {!isLoading && issues.length === 0 && (
-        <List.EmptyView icon="🎉" title="No issues" description="All skills look healthy." />
+        <List.EmptyView
+          icon="🎉"
+          title="No issues"
+          description="All skills look healthy."
+        />
       )}
     </List>
   );

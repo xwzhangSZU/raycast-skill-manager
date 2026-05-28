@@ -51,7 +51,8 @@ function perSkillIssues(s: ParsedSkill): HealthIssue[] {
     });
   }
   // H3: name != dir
-  const fmName = typeof s.frontmatter.name === "string" ? s.frontmatter.name.trim() : "";
+  const fmName =
+    typeof s.frontmatter.name === "string" ? s.frontmatter.name.trim() : "";
   const dir = basename(s.realPath);
   if (fmName && fmName !== dir) {
     out.push({
@@ -67,7 +68,10 @@ function perSkillIssues(s: ParsedSkill): HealthIssue[] {
   return out;
 }
 
-function crossSurfaceDrift(userSkills: ParsedSkill[], home: string): HealthIssue[] {
+function crossSurfaceDrift(
+  userSkills: ParsedSkill[],
+  home: string,
+): HealthIssue[] {
   const hasClaude = userSkills.some((s) => s.surface === "claude");
   const hasCodex = userSkills.some((s) => s.surface === "codex");
   const byName = new Map<string, ParsedSkill[]>();
@@ -78,10 +82,16 @@ function crossSurfaceDrift(userSkills: ParsedSkill[], home: string): HealthIssue
   }
   const out: HealthIssue[] = [];
   for (const [name, list] of byName) {
-    const clPaths = new Set(list.filter((s) => s.surface === "claude").map((s) => s.realPath));
-    const cxPaths = new Set(list.filter((s) => s.surface === "codex").map((s) => s.realPath));
+    const clPaths = new Set(
+      list.filter((s) => s.surface === "claude").map((s) => s.realPath),
+    );
+    const cxPaths = new Set(
+      list.filter((s) => s.surface === "codex").map((s) => s.realPath),
+    );
     if (clPaths.size && cxPaths.size) {
-      const same = [...clPaths].every((p) => cxPaths.has(p)) && [...cxPaths].every((p) => clPaths.has(p));
+      const same =
+        [...clPaths].every((p) => cxPaths.has(p)) &&
+        [...cxPaths].every((p) => clPaths.has(p));
       if (!same) {
         out.push({
           id: `H4d:${name}`,
@@ -90,7 +100,10 @@ function crossSurfaceDrift(userSkills: ParsedSkill[], home: string): HealthIssue
           skillName: name,
           message: "Claude/Codex point to different sources",
           affectedPaths: [...clPaths, ...cxPaths],
-          meta: { claudePath: [...clPaths][0] ?? "", codexPath: [...cxPaths][0] ?? "" },
+          meta: {
+            claudePath: [...clPaths][0] ?? "",
+            codexPath: [...cxPaths][0] ?? "",
+          },
         });
       }
     } else if (clPaths.size && !cxPaths.size && hasCodex) {
@@ -101,7 +114,11 @@ function crossSurfaceDrift(userSkills: ParsedSkill[], home: string): HealthIssue
         skillName: name,
         message: "Only in Claude, missing in Codex",
         affectedPaths: [...clPaths],
-        meta: { realPath: [...clPaths][0] ?? "", targetSurface: "codex", targetDir: surfaceDir(home, "codex", name) },
+        meta: {
+          realPath: [...clPaths][0] ?? "",
+          targetSurface: "codex",
+          targetDir: surfaceDir(home, "codex", name),
+        },
       });
     } else if (cxPaths.size && !clPaths.size && hasClaude) {
       out.push({
@@ -111,7 +128,11 @@ function crossSurfaceDrift(userSkills: ParsedSkill[], home: string): HealthIssue
         skillName: name,
         message: "Only in Codex, missing in Claude",
         affectedPaths: [...cxPaths],
-        meta: { realPath: [...cxPaths][0] ?? "", targetSurface: "claude", targetDir: surfaceDir(home, "claude", name) },
+        meta: {
+          realPath: [...cxPaths][0] ?? "",
+          targetSurface: "claude",
+          targetDir: surfaceDir(home, "claude", name),
+        },
       });
     }
   }
@@ -119,7 +140,10 @@ function crossSurfaceDrift(userSkills: ParsedSkill[], home: string): HealthIssue
 }
 
 function staleCache(skills: ParsedSkill[]): HealthIssue[] {
-  const cacheSkills = skills.filter((s) => s.source === "claude-plugin-cache" || s.source === "codex-plugin-cache");
+  const cacheSkills = skills.filter(
+    (s) =>
+      s.source === "claude-plugin-cache" || s.source === "codex-plugin-cache",
+  );
   const byKey = new Map<string, ParsedSkill[]>();
   for (const s of cacheSkills) {
     const k = `${s.marketplace ?? ""}:${s.name}`;
@@ -130,7 +154,9 @@ function staleCache(skills: ParsedSkill[]): HealthIssue[] {
   const out: HealthIssue[] = [];
   for (const [key, list] of byKey) {
     if (list.length > 1) {
-      const sorted = [...list].sort((a, b) => (b.pluginVersion ?? "").localeCompare(a.pluginVersion ?? ""));
+      const sorted = [...list].sort((a, b) =>
+        (b.pluginVersion ?? "").localeCompare(a.pluginVersion ?? ""),
+      );
       const old = sorted.slice(1);
       out.push({
         id: `H5:${key}`,
@@ -146,10 +172,15 @@ function staleCache(skills: ParsedSkill[]): HealthIssue[] {
   return out;
 }
 
-export function computeHealth(skills: ParsedSkill[], home: string): HealthIssue[] {
+export function computeHealth(
+  skills: ParsedSkill[],
+  home: string,
+): HealthIssue[] {
   const issues: HealthIssue[] = [];
   for (const s of skills) issues.push(...perSkillIssues(s));
-  const userSkills = skills.filter((s) => USER_SOURCES.has(s.source) && !s.isBroken);
+  const userSkills = skills.filter(
+    (s) => USER_SOURCES.has(s.source) && !s.isBroken,
+  );
   issues.push(...crossSurfaceDrift(userSkills, home));
   issues.push(...staleCache(skills));
   return issues;

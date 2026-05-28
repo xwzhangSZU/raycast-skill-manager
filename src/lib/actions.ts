@@ -4,7 +4,10 @@ import { Clipboard, open, showToast, Toast } from "@raycast/api";
 
 const pexec = promisify(exec);
 
-export async function copyToClipboard(text: string, title = "Copied"): Promise<void> {
+export async function copyToClipboard(
+  text: string,
+  title = "Copied",
+): Promise<void> {
   await Clipboard.copy(text);
   await showToast({ style: Toast.Style.Success, title });
 }
@@ -22,6 +25,9 @@ export async function openInEditor(filePath: string): Promise<void> {
   try {
     await open(filePath);
   } catch {
-    await showToast({ style: Toast.Style.Failure, title: "Could not open editor" });
+    await showToast({
+      style: Toast.Style.Failure,
+      title: "Could not open editor",
+    });
   }
 }

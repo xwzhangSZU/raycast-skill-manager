@@ -23,16 +23,21 @@ function firstSentence(text: string): string {
 }
 
 function slashCommand(s: DisplaySkill): string {
-  if (s.source.includes("plugin") && s.marketplace) return `/${s.marketplace}:${s.name}`;
+  if (s.source.includes("plugin") && s.marketplace)
+    return `/${s.marketplace}:${s.name}`;
   return `/${s.name}`;
 }
 
 function sectionTitle(s: DisplaySkill): string {
-  if (s.source.includes("plugin")) return `Plugins · ${s.marketplace ?? "unknown"}`;
+  if (s.source.includes("plugin"))
+    return `Plugins · ${s.marketplace ?? "unknown"}`;
   return "User · Claude + Codex";
 }
 
-function accessoriesFor(s: DisplaySkill, issues: HealthIssue[]): List.Item.Accessory[] {
+function accessoriesFor(
+  s: DisplaySkill,
+  issues: HealthIssue[],
+): List.Item.Accessory[] {
   const acc: List.Item.Accessory[] = s.surfaces.map((surf) => ({ tag: surf }));
   const hasError = issues.some((i) => i.severity === "error");
   if (issues.length > 0) {
@@ -49,7 +54,9 @@ function accessoriesFor(s: DisplaySkill, issues: HealthIssue[]): List.Item.Acces
 export default function Command() {
   const [isLoading, setLoading] = useState(true);
   const [items, setItems] = useState<DisplaySkill[]>([]);
-  const [issuesByName, setIssuesByName] = useState<Map<string, HealthIssue[]>>(new Map());
+  const [issuesByName, setIssuesByName] = useState<Map<string, HealthIssue[]>>(
+    new Map(),
+  );
   const [showingDetail, setShowingDetail] = useState(false);
 
   async function load(force = false) {
@@ -82,7 +89,11 @@ export default function Command() {
     sections.set(t, arr);
   }
   const orderedSections = [...sections.entries()].sort((a, b) =>
-    a[0].startsWith("User") ? -1 : b[0].startsWith("User") ? 1 : a[0].localeCompare(b[0]),
+    a[0].startsWith("User")
+      ? -1
+      : b[0].startsWith("User")
+        ? 1
+        : a[0].localeCompare(b[0]),
   );
 
   return (
@@ -100,13 +111,19 @@ export default function Command() {
                 key={s.key}
                 icon={iconFor(s)}
                 title={s.name}
-                subtitle={showingDetail ? undefined : firstSentence(s.description)}
+                subtitle={
+                  showingDetail ? undefined : firstSentence(s.description)
+                }
                 keywords={s.keywords}
                 accessories={accessoriesFor(s, issues)}
                 detail={<SkillDetail skill={s} issues={issues} />}
                 actions={
                   <ActionPanel>
-                    <Action title="Copy Skill Name" icon={Icon.Clipboard} onAction={() => copyToClipboard(s.name)} />
+                    <Action
+                      title="Copy Skill Name"
+                      icon={Icon.Clipboard}
+                      onAction={() => copyToClipboard(s.name)}
+                    />
                     <Action
                       title="Copy as /command"
                       icon={Icon.Terminal}
@@ -117,7 +134,9 @@ export default function Command() {
                       title="Copy Trigger Phrase"
                       icon={Icon.Text}
                       shortcut={{ modifiers: ["cmd", "shift"], key: "t" }}
-                      onAction={() => copyToClipboard(s.primary.triggerHints[0] ?? s.name)}
+                      onAction={() =>
+                        copyToClipboard(s.primary.triggerHints[0] ?? s.name)
+                      }
                     />
                     <Action
                       title="Toggle Detail"
@@ -129,15 +148,25 @@ export default function Command() {
                       title="Open in Editor"
                       icon={Icon.Code}
                       shortcut={{ modifiers: ["cmd"], key: "o" }}
-                      onAction={() => openInEditor(join(s.primary.realPath, "SKILL.md"))}
+                      onAction={() =>
+                        openInEditor(join(s.primary.realPath, "SKILL.md"))
+                      }
                     />
-                    <Action.ShowInFinder path={s.primary.realPath} shortcut={{ modifiers: ["cmd", "shift"], key: "f" }} />
+                    <Action.ShowInFinder
+                      path={s.primary.realPath}
+                      shortcut={{ modifiers: ["cmd", "shift"], key: "f" }}
+                    />
                     {issues.length > 0 && (
                       <Action
                         title="Copy Fix Command"
                         icon={Icon.WrenchScrewdriver}
                         shortcut={{ modifiers: ["cmd", "shift"], key: "x" }}
-                        onAction={() => copyToClipboard(buildFixCommand(issues[0]), "Fix command copied")}
+                        onAction={() =>
+                          copyToClipboard(
+                            buildFixCommand(issues[0]),
+                            "Fix command copied",
+                          )
+                        }
                       />
                     )}
                     <Action

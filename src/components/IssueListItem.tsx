@@ -5,8 +5,10 @@ import { join } from "node:path";
 import type { HealthIssue } from "../lib/types";
 
 function iconFor(sev: HealthIssue["severity"]) {
-  if (sev === "error") return { source: Icon.XMarkCircle, tintColor: Color.Red };
-  if (sev === "warning") return { source: Icon.Warning, tintColor: Color.Yellow };
+  if (sev === "error")
+    return { source: Icon.XMarkCircle, tintColor: Color.Red };
+  if (sev === "warning")
+    return { source: Icon.Warning, tintColor: Color.Yellow };
   return { source: Icon.Info, tintColor: Color.SecondaryText };
 }
 
@@ -23,7 +25,9 @@ export function IssueListItem({ issue }: { issue: HealthIssue }) {
           <Action
             title="Copy Fix Command"
             icon={Icon.WrenchScrewdriver}
-            onAction={() => copyToClipboard(buildFixCommand(issue), "Fix command copied")}
+            onAction={() =>
+              copyToClipboard(buildFixCommand(issue), "Fix command copied")
+            }
           />
           {primaryPath && (
             <Action
@@ -33,7 +37,12 @@ export function IssueListItem({ issue }: { issue: HealthIssue }) {
               onAction={() => openInEditor(join(primaryPath, "SKILL.md"))}
             />
           )}
-          {primaryPath && <Action.ShowInFinder path={primaryPath} shortcut={{ modifiers: ["cmd", "shift"], key: "f" }} />}
+          {primaryPath && (
+            <Action.ShowInFinder
+              path={primaryPath}
+              shortcut={{ modifiers: ["cmd", "shift"], key: "f" }}
+            />
+          )}
         </ActionPanel>
       }
     />

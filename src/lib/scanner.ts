@@ -85,26 +85,46 @@ async function scanDir(
   return out;
 }
 
-async function scanAgent(home: string, agent: Surface): Promise<RawSkillEntry[]> {
+async function scanAgent(
+  home: string,
+  agent: Surface,
+): Promise<RawSkillEntry[]> {
   const root = join(home, agent === "claude" ? ".claude" : ".codex");
   const out: RawSkillEntry[] = [];
 
-  out.push(...(await scanDir(join(root, "skills"), agent, `${agent}-user` as SourceType, {})));
+  out.push(
+    ...(await scanDir(
+      join(root, "skills"),
+      agent,
+      `${agent}-user` as SourceType,
+      {},
+    )),
+  );
 
   const mpRoot = join(root, "plugins/marketplaces");
   for (const mp of await listDirs(mpRoot)) {
     out.push(
-      ...(await scanDir(join(mpRoot, mp, "skills"), agent, `${agent}-plugin-marketplace` as SourceType, {
-        marketplace: mp,
-      })),
+      ...(await scanDir(
+        join(mpRoot, mp, "skills"),
+        agent,
+        `${agent}-plugin-marketplace` as SourceType,
+        {
+          marketplace: mp,
+        },
+      )),
     );
     const plugRoot = join(mpRoot, mp, "plugins");
     for (const pl of await listDirs(plugRoot)) {
       out.push(
-        ...(await scanDir(join(plugRoot, pl, "skills"), agent, `${agent}-plugin-nested` as SourceType, {
-          marketplace: mp,
-          pluginName: pl,
-        })),
+        ...(await scanDir(
+          join(plugRoot, pl, "skills"),
+          agent,
+          `${agent}-plugin-nested` as SourceType,
+          {
+            marketplace: mp,
+            pluginName: pl,
+          },
+        )),
       );
     }
   }
@@ -113,10 +133,15 @@ async function scanAgent(home: string, agent: Surface): Promise<RawSkillEntry[]>
   for (const mp of await listDirs(cacheRoot)) {
     for (const ver of await listDirs(join(cacheRoot, mp))) {
       out.push(
-        ...(await scanDir(join(cacheRoot, mp, ver, "skills"), agent, `${agent}-plugin-cache` as SourceType, {
-          marketplace: mp,
-          pluginVersion: ver,
-        })),
+        ...(await scanDir(
+          join(cacheRoot, mp, ver, "skills"),
+          agent,
+          `${agent}-plugin-cache` as SourceType,
+          {
+            marketplace: mp,
+            pluginVersion: ver,
+          },
+        )),
       );
     }
   }
