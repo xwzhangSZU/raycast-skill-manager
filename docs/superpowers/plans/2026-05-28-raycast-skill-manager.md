@@ -6,7 +6,7 @@
 
 **Architecture:** A pure `lib/` core (scan → parse → aggregate → health → fix-command, plus a cache/reconcile layer) with zero React dependency, unit-tested with vitest. Two thin Raycast `view` commands (`search-skills.tsx`, `skill-doctor.tsx`) render the core through `<List>`. No dependency on the author's private `agent-skills` bash tool.
 
-**Tech Stack:** TypeScript, `@raycast/api`, `js-yaml`, Node `fs/promises`, vitest, pnpm.
+**Tech Stack:** TypeScript, `@raycast/api`, `js-yaml`, Node `fs/promises`, vitest, npm.
 
 **Spec:** `docs/superpowers/specs/2026-05-28-raycast-skill-manager-design.md`
 
@@ -167,12 +167,12 @@ mkdir -p assets && printf '\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x
 
 - [ ] **Step 6: Install dependencies**
 
-Run: `cd ~/Projects/raycast-skill-manager && pnpm install`
+Run: `cd ~/Projects/raycast-skill-manager && npm install`
 Expected: dependencies install; `node_modules/.bin/ray` and `node_modules/.bin/vitest` exist.
 
 - [ ] **Step 7: Verify vitest runs (no tests yet)**
 
-Run: `pnpm test`
+Run: `npm test`
 Expected: vitest exits 0 with "No test files found" (acceptable) — or create `test/` dir first if it errors on missing dir: `mkdir -p test/fixtures`.
 
 - [ ] **Step 8: Commit**
@@ -1757,7 +1757,7 @@ Expected: no errors.
 
 - [ ] **Step 4: Manual verification**
 
-Run: `pnpm dev`
+Run: `npm run dev`
 Then in Raycast: open "Search Skills". Verify:
 - Skills appear grouped (User section first, then Plugins by marketplace).
 - Typing `scrape` / a Chinese purpose word filters to the right skill.
@@ -1887,7 +1887,7 @@ Expected: no errors.
 
 - [ ] **Step 4: Manual verification**
 
-Run: `pnpm dev`
+Run: `npm run dev`
 Then in Raycast: open "Skill Doctor". Verify:
 - Issues grouped by Errors / Warnings / Info with counts.
 - The known `bailian-cli` H3 case appears as a warning (if present on this machine).
@@ -1912,13 +1912,13 @@ git commit -m "feat: add Skill Doctor health command"
 
 - [ ] **Step 1: Run the full test suite**
 
-Run: `pnpm test`
+Run: `npm test`
 Expected: all 6 test files pass.
 
 - [ ] **Step 2: Run the linter**
 
-Run: `pnpm lint`
-Expected: no errors. If autofixable issues appear, run `pnpm fix-lint` and re-run `pnpm lint`.
+Run: `npm run lint`
+Expected: no errors. If autofixable issues appear, run `npm run fix-lint` and re-run `npm run lint`.
 
 - [ ] **Step 3: Type-check the whole project**
 
@@ -1948,10 +1948,10 @@ copied to the clipboard for you to review and run in your own terminal.
 ## Development
 
 ```bash
-pnpm install
-pnpm dev      # run in Raycast
-pnpm test     # run unit tests
-pnpm lint     # lint
+npm install
+npm run dev      # run in Raycast
+npm test     # run unit tests
+npm run lint     # lint
 ```
 ```
 
@@ -1959,12 +1959,12 @@ pnpm lint     # lint
 
 Create a real 512×512 PNG at `assets/icon.png` (box/puzzle motif, Catppuccin
 palette). If a designed asset is not ready, keep the placeholder — it does not
-block `pnpm dev`, only Store submission. Note this as the one remaining
+block `npm run dev`, only Store submission. Note this as the one remaining
 pre-publish task.
 
 - [ ] **Step 6: Final manual smoke test**
 
-Run: `pnpm dev`
+Run: `npm run dev`
 Verify both commands open without errors on the real machine; confirm the
 inventory count looks right (100+ skills) and Doctor surfaces the real
 `bailian-cli` H3 case. Stop with Ctrl-C.
@@ -2008,6 +2008,6 @@ No spec requirement is left without a task.
 
 ## Notes for the implementer
 
-- `@raycast/api` version in `package.json` is a known-good floor; if `pnpm install` resolves a newer 1.x, that is fine.
+- `@raycast/api` version in `package.json` is a known-good floor; if `npm install` resolves a newer 1.x, that is fine.
 - The cache versioned-dir layout (`plugins/cache/<mp>/<version>/skills`) is an assumption; the scanner tolerates absence, so if a machine's layout differs, those entries simply won't appear — verify against the real `~/.claude/plugins/cache` during Task 4 manual checks and adjust `scanAgent` if needed.
 - If `ray lint` complains about the raw PNG placeholder, regenerate it or drop in any 512×512 PNG; it is cosmetic for dev.
