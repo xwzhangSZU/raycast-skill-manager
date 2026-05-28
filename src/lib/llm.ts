@@ -39,7 +39,8 @@ export async function chat(prompt: string): Promise<string> {
       signal: AbortSignal.timeout(20000),
     },
   );
-  if (!res.ok) throw new Error(`LLM ${res.status}: ${await res.text()}`);
+  if (!res.ok)
+    throw new Error(`LLM ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const json = (await res.json()) as {
     choices?: { message?: { content?: string } }[];
   };

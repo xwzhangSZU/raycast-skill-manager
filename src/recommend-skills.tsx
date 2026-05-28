@@ -30,11 +30,11 @@ export default function Command() {
   const [showingDetail, setShowingDetail] = useState(false);
   const cache = useRef(new Map<string, Recommendation[]>());
 
-  async function run() {
+  async function run(force = false) {
     const q = query.trim();
     if (!q) return;
     const cached = cache.current.get(q);
-    if (cached) {
+    if (cached && !force) {
       setRecs(cached);
       return;
     }
@@ -57,10 +57,16 @@ export default function Command() {
       if (e instanceof AIUnavailableError) {
         setUnavailable(true);
       } else {
+        const message =
+          e instanceof Error && e.name === "TimeoutError"
+            ? "AI timed out — try again"
+            : e instanceof Error
+              ? e.message
+              : String(e);
         await showToast({
           style: Toast.Style.Failure,
           title: "Recommendation failed",
-          message: e instanceof Error ? e.message : String(e),
+          message,
         });
       }
     } finally {
@@ -135,7 +141,7 @@ export default function Command() {
         <RecommendationItem
           key={rec.skill.key}
           rec={rec}
-          onRerun={run}
+          onRerun={() => run(true)}
           onToggleDetail={() => setShowingDetail((v) => !v)}
         />
       ))}
