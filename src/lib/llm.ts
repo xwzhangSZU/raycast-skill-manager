@@ -22,7 +22,7 @@ export async function chat(prompt: string): Promise<string> {
   }
 
   if (!p.apiBaseURL || !p.apiKey)
-    throw new AIUnavailableError("No API key configured");
+    throw new AIUnavailableError("No custom endpoint or key configured");
   const res = await fetch(
     `${p.apiBaseURL.replace(/\/$/, "")}/chat/completions`,
     {

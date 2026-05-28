@@ -34,38 +34,36 @@
     {
       "name": "provider",
       "title": "AI Provider",
-      "description": "Which AI to use for Recommend Skills.",
+      "description": "Which AI powers Recommend Skills.",
       "type": "dropdown",
       "required": false,
       "default": "auto",
       "data": [
-        { "title": "Auto (Raycast AI, else my key)", "value": "auto" },
+        { "title": "Auto (Raycast AI, fall back to custom)", "value": "auto" },
         { "title": "Raycast AI", "value": "raycast" },
-        { "title": "My API key", "value": "byok" }
+        { "title": "Custom (OpenAI-compatible)", "value": "byok" }
       ]
     },
     {
       "name": "apiBaseURL",
-      "title": "API Base URL",
-      "description": "OpenAI-compatible endpoint (used for My API key / Auto fallback).",
+      "title": "Custom API Base URL",
+      "description": "Any OpenAI-compatible endpoint. Examples: https://api.openai.com/v1 · https://api.deepseek.com/v1 · https://openrouter.ai/api/v1 · https://dashscope.aliyuncs.com/compatible-mode/v1 · http://localhost:11434/v1",
       "type": "textfield",
-      "required": false,
-      "default": "https://dashscope.aliyuncs.com/compatible-mode/v1"
+      "required": false
     },
     {
       "name": "apiKey",
-      "title": "API Key",
-      "description": "Your OpenAI-compatible API key.",
+      "title": "Custom API Key",
+      "description": "API key for your OpenAI-compatible provider.",
       "type": "password",
       "required": false
     },
     {
       "name": "apiModel",
-      "title": "Model",
-      "description": "Model name for your API key (e.g. qwen-plus, gpt-4o-mini).",
+      "title": "Custom Model",
+      "description": "Model id for your provider. Examples: gpt-4o-mini · deepseek-chat · qwen-plus · llama3.1",
       "type": "textfield",
-      "required": false,
-      "default": "qwen-plus"
+      "required": false
     }
   ],
   "dependencies": {
